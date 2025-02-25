@@ -18,8 +18,15 @@ public:
         YearMonthDay
     };
 
+    int day();
+    int month();
+    int year();
+    void day(int day);
+    void month(int month);
+    void year(int year);
+
 private:
 	
-    int day, month, year;
+    int _day, _month, _year;
 
 };

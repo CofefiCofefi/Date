@@ -3,8 +3,7 @@
 #include "date.hpp"
 #include "iostream"
 
-//This is a test
+Date::Date() : day(1), month(1), year(1970) {}
 
-int Jonah(int x) {
-	return x + x;
-}
+Date::Date(int d, int m, int y) : day(d), month(m), year(y) {}
+

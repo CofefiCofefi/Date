@@ -3,35 +3,53 @@
 #include "date.hpp"
 #include "iostream"
 
-Date::Date() : _day(1), _month(1), _year(1970) {}
+Date::Date() {
+	time(&_t);
+	_date = *localtime(&_t);
+
+	_date.tm_mday = 1;
+	_date.tm_mon = 0;
+	_date.tm_year = 1970 - 1900;
+
+}
 
 Date::Date(int d, int m, int y) { // Make this check if the date enterd is valid and if it is not throw Date::Invalid
-	_day = d;
-	_month = m;
-	_year = y;
+	time(&_t);
+	_date = *localtime(&_t);
+
+	_date.tm_mday = d;
+	_date.tm_mon = (m - 1);
+	_date.tm_year = (y - 1900);
+
+	tm dateCpy = _date;
+	mktime(&dateCpy);
+
+	if (dateCpy.tm_mday != d || dateCpy.tm_mon != (m - 1) || dateCpy.tm_year != (y - 1900)){
+		throw Date::Invalid{ d, m, y };
+	};
 };
 
-int Date::day() {
-	return _day;
+const int Date::day() {
+	return _date.tm_mday;
 };
 
-int Date::month() {
-	return _month;
+const int Date::month() {
+	return (_date.tm_mon + 1);
 };
 
-int Date::year() {
-	return _year;
+const int Date::year() {
+	return (_date.tm_year + 1900);
 };
 
 void Date::day(int day) {	//If setting the field to the required value would result in an invalid date,
-	_day = day;				// throw an Date::Invalid exception containing the values your date would have
+	_date.tm_mday = day;	// throw an Date::Invalid exception containing the values your date would have
 };							// had. Setters should have a strong exception guarantee. (FOR ALL 3 SETTERS)
 
 void Date::month(int month) {
-	_month = month;
+	_date.tm_mon = (month - 1);
 };
 
 void Date::year(int year) {
-	_year = year;
+	_date.tm_year = (year - 1900);
 };
 

@@ -18,15 +18,14 @@ public:
         YearMonthDay
     };
 
-    int day();
-    int month();
-    int year();
+    const int day();
+    const int month();
+    const int year();
     void day(int day);
     void month(int month);
     void year(int year);
 
 private:
-	
-    int _day, _month, _year;
-
+    time_t _t;
+    tm _date;
 };

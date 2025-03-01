@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "date.hpp"
 #include "iostream"
+#include <string>
 
 Date::Date() {
 	time(&_t);
@@ -11,7 +12,7 @@ Date::Date() {
 	_date.tm_mon = 0;
 	_date.tm_year = 1970 - 1900;
 
-}
+};
 
 Date::Date(int d, int m, int y) {
 	time(&_t);
@@ -28,6 +29,9 @@ Date::Date(int d, int m, int y) {
 		throw Date::Invalid{ d, m, y };
 	};
 };
+
+Date::Order order = Date::Order::MonthDayYear;
+char Date::seperator = '/';
 
 const int Date::day() {
 	return _date.tm_mday;
@@ -53,7 +57,7 @@ void Date::day(int day) {
 	}
 
 	_date.tm_mday = originalDay;
-}
+};
 
 void Date::month(int month) {
 	tm dateCpy = _date;
@@ -67,7 +71,7 @@ void Date::month(int month) {
 	}
 
 	_date.tm_mon = originalMonth - 1;
-}
+};
 
 void Date::year(int year) { //Is there such a thing as an invalid year? 
 	tm dateCpy = _date;
@@ -83,3 +87,63 @@ void Date::year(int year) { //Is there such a thing as an invalid year?
     _date.tm_year = originalYear - 1900;
 };
 
+const std::string Date::monthName() {
+	switch (_date.tm_mon + 1) {
+	case 1: return "January";
+	case 2: return "February";
+	case 3: return "March";
+	case 4: return "April";
+	case 5: return "May";
+	case 6: return "June";
+	case 7: return "July";
+	case 8: return "August";
+	case 9: return "September";
+	case 10: return "October";
+	case 11: return "November";
+	case 12: return "December";
+	}
+};
+
+const std::string Date::dayName() {
+	switch (_date.tm_wday + 1) {
+	case 1: return "Sunday";
+	case 2: return "Monday";
+	case 3: return "Tuesday";
+	case 4: return "Wednesday";
+	case 5: return "Thursday";
+	case 6: return "Friday";
+	case 7: return "Saturday";
+	}
+};
+
+void Date::advance() {
+	time_t seconds = mktime(&_date);
+	seconds += 24 * 60 * 60;
+	_date = *localtime(&seconds);
+};
+
+void Date::advance(int numOfDays) {
+	time_t seconds = mktime(&_date);
+	seconds += (24 * 60 * 60) * numOfDays;
+	_date = *localtime(&seconds);
+};
+
+void Date::print(std::ostream& outputStream) {
+	if (Date::order == Date::Order::DayMonthYear) {
+		outputStream << this->day() << Date::seperator << this->month() << Date::seperator << this->year() << std::endl;
+	}
+	else if (Date::order == Date::Order::MonthDayYear) {
+		outputStream << this->month() << Date::seperator << this->day() << Date::seperator << this->year() << std::endl;
+	}
+	else if (Date::order == Date::Order::YearMonthDay) {
+		outputStream << this->year() << Date::seperator << this->month() << Date::seperator << this->day() << std::endl;
+	}
+};
+
+Date Date::now() {
+	tm date;
+	time_t seconds = time(nullptr);
+	date = *localtime(&seconds);
+	Date now(date.tm_mday, date.tm_mon + 1, date.tm_year + 1900);
+	return now;
+};

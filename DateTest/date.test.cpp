@@ -1,18 +1,18 @@
 #include "gtest/gtest.h"
 #include "date.hpp"
-TEST(constructor_tests, valueConstructor) {
+TEST(DefaultCtor, assignsCorrectDefaultValues) {
 	Date test(1, 2, 2020);
 	EXPECT_EQ(test.day(), 1);
     EXPECT_EQ(test.month(), 2);
     EXPECT_EQ(test.year(), 2020);
 }
-TEST(constructor_tests, defaultConstructor) {
+TEST(ValueCtor, assignsCorrectCustomValues) {
 	Date test;
 	EXPECT_EQ(test.day(), 1);
     EXPECT_EQ(test.month(), 1);
     EXPECT_EQ(test.year(), 1970);
 }
-TEST(errorTesting, InvalidDay)
+TEST(ValueCtor, checkForValidDate)
 {
     try {
         Date test(1, 200, 2020);
@@ -24,7 +24,7 @@ TEST(errorTesting, InvalidDay)
         EXPECT_EQ(error.year, 2020);
     }
 }
-TEST(errorTesting, InvalidDaySetter)
+TEST(Setters, catchInvalidDaySetter)
 {
     try {
         Date date(28, 2, 2025);
@@ -37,7 +37,7 @@ TEST(errorTesting, InvalidDaySetter)
         EXPECT_EQ(error.year, 2025);
     }
 }
-TEST(errorTesting, InvalidMonthSetter)
+TEST(Setters, catchInvalidMonthSetter)
 {
     try {
         Date date(20, 12, 2025);
@@ -49,4 +49,37 @@ TEST(errorTesting, InvalidMonthSetter)
         EXPECT_EQ(error.month, 13);
         EXPECT_EQ(error.year, 2025);
     }
+}
+TEST(Props, correctMonthName) {
+    Date test(3, 4, 2025);
+    EXPECT_EQ(test.monthName(), "April");
+}
+TEST(Props, correctDayName) {
+    Date test(28, 2, 2025);
+    EXPECT_EQ(test.dayName(), "Friday");
+}
+TEST(Advance, correctDefaultAdvance) {
+    Date test(28, 2, 2025);
+    test.advance();
+    EXPECT_EQ(test.day(), 1);
+    test.advance();
+    EXPECT_EQ(test.day(), 2);
+}
+TEST(Advance, correctCustomAdvance) {
+    Date test(28, 2, 2025);
+    test.advance(2);
+    EXPECT_EQ(test.day(), 2);
+    test.advance(-4);
+    EXPECT_EQ(test.day(), 26);
+}
+TEST(Now, checkCurrentTime) {
+    Date test = Date::now();
+
+    tm date;
+    time_t seconds = time(nullptr);
+    date = *localtime(&seconds);
+
+    EXPECT_EQ(test.day(), date.tm_mday);
+    EXPECT_EQ(test.month(), date.tm_mon + 1);
+    EXPECT_EQ(test.year(), date.tm_year + 1900);
 }

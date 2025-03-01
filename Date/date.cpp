@@ -28,6 +28,7 @@ Date::Date(int d, int m, int y) {
 	if (dateCpy.tm_mday != d || dateCpy.tm_mon != (m - 1) || dateCpy.tm_year != (y - 1900)){
 		throw Date::Invalid{ d, m, y };
 	};
+	mktime(&_date);
 };
 
 Date::Order Date::order = Date::Order::MonthDayYear;
@@ -88,33 +89,34 @@ void Date::year(int year) { //Is there such a thing as an invalid year?
 };
 
 const std::string Date::monthName() {
-	switch (_date.tm_mon + 1) {
-	case 1: return "January";
-	case 2: return "February";
-	case 3: return "March";
-	case 4: return "April";
-	case 5: return "May";
-	case 6: return "June";
-	case 7: return "July";
-	case 8: return "August";
-	case 9: return "September";
-	case 10: return "October";
-	case 11: return "November";
-	case 12: return "December";
+	switch (_date.tm_mon) {
+	case 0: return "January";
+	case 1: return "February";
+	case 2: return "March";
+	case 3: return "April";
+	case 4: return "May";
+	case 5: return "June";
+	case 6: return "July";
+	case 7: return "August";
+	case 8: return "September";
+	case 9: return "October";
+	case 10: return "November";
+	case 11: return "December";
 	}
-};
+}
+
 
 const std::string Date::dayName() {
-	switch (_date.tm_wday + 1) {
-	case 1: return "Sunday";
-	case 2: return "Monday";
-	case 3: return "Tuesday";
-	case 4: return "Wednesday";
-	case 5: return "Thursday";
-	case 6: return "Friday";
-	case 7: return "Saturday";
+	switch (_date.tm_wday) {
+	case 0: return "Sunday";
+	case 1: return "Monday";
+	case 2: return "Tuesday";
+	case 3: return "Wednesday";
+	case 4: return "Thursday";
+	case 5: return "Friday";
+	case 6: return "Saturday";
 	}
-};
+}
 
 void Date::advance() {
 	time_t seconds = mktime(&_date);

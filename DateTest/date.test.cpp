@@ -1,19 +1,19 @@
 #include "gtest/gtest.h"
 #include "date.hpp"
 #include <sstream>
-TEST(DefaultCtor, assignsCorrectDefaultValues) {
+const TEST(DefaultCtor, assignsCorrectDefaultValues) {
 	Date test(1, 2, 2020);
 	EXPECT_EQ(test.day(), 1);
     EXPECT_EQ(test.month(), 2);
     EXPECT_EQ(test.year(), 2020);
 }
-TEST(ValueCtor, assignsCorrectCustomValues) {
+const TEST(ValueCtor, assignsCorrectCustomValues) {
 	Date test;
 	EXPECT_EQ(test.day(), 1);
     EXPECT_EQ(test.month(), 1);
     EXPECT_EQ(test.year(), 1970);
 }
-TEST(ValueCtor, checkForValidDate)
+const TEST(ValueCtor, checkForValidDate)
 {
     try {
         Date test(1, 200, 2020);
@@ -25,7 +25,7 @@ TEST(ValueCtor, checkForValidDate)
         EXPECT_EQ(error.year, 2020);
     }
 }
-TEST(Setters, catchInvalidDaySetter)
+const TEST(Setters, catchInvalidDaySetter)
 {
     try {
         Date date(28, 2, 2025);
@@ -38,7 +38,7 @@ TEST(Setters, catchInvalidDaySetter)
         EXPECT_EQ(error.year, 2025);
     }
 }
-TEST(Setters, catchInvalidMonthSetter)
+const TEST(Setters, catchInvalidMonthSetter)
 {
     try {
         Date date(20, 12, 2025);
@@ -51,30 +51,30 @@ TEST(Setters, catchInvalidMonthSetter)
         EXPECT_EQ(error.year, 2025);
     }
 }
-TEST(Props, correctMonthName) {
+const TEST(Props, correctMonthName) {
     Date test(3, 2, 2025);
     EXPECT_EQ(test.monthName(), "February");
 }
-TEST(Props, correctDayName) {
-    Date test(1, 3, 2025);
-    EXPECT_EQ(test.dayName(), "Saturday");
+const TEST(Props, correctDayName) {
+    Date test(3, 3, 2025);
+    EXPECT_EQ(test.dayName(), "Monday");
 }
 
-TEST(Advance, correctDefaultAdvance) {
+const TEST(Advance, correctDefaultAdvance) {
     Date test(28, 2, 2025);
     test.advance();
     EXPECT_EQ(test.day(), 1);
     test.advance();
     EXPECT_EQ(test.day(), 2);
 }
-TEST(Advance, correctCustomAdvance) {
+const TEST(Advance, correctCustomAdvance) {
     Date test(28, 2, 2025);
     test.advance(2);
     EXPECT_EQ(test.day(), 2);
     test.advance(-4);
     EXPECT_EQ(test.day(), 26);
 }
-TEST(Now, checkCurrentTime) {
+const TEST(Now, checkCurrentTime) {
     Date test = Date::now();
 
     tm date;
@@ -86,7 +86,7 @@ TEST(Now, checkCurrentTime) {
     EXPECT_EQ(test.year(), date.tm_year + 1900);
 }
 
-TEST(Print, PrintFormatsCorrectly) {
+const TEST(Print, PrintFormatsCorrectly) {
     Date date(5, 7, 2024);
     Date::order = Date::Order::MonthDayYear;
 
@@ -96,7 +96,7 @@ TEST(Print, PrintFormatsCorrectly) {
     EXPECT_EQ(output.str(), "7/5/2024");
 }
 
-TEST(Print, PrintFormatsCorrectly2) {
+const TEST(Print, PrintFormatsCorrectly2) {
     Date date(5, 7, 2024);
     Date::order = Date::Order::DayMonthYear;
 
@@ -107,7 +107,7 @@ TEST(Print, PrintFormatsCorrectly2) {
     EXPECT_EQ(output.str(), "5/7/2024");
 }
 
-TEST(Print, PrintFormatsCorrectly3) {
+const TEST(Print, PrintFormatsCorrectly3) {
     Date date(5, 7, 2024);
     Date::order = Date::Order::YearMonthDay;
 

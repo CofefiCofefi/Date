@@ -1,4 +1,5 @@
 # Comp 3450 Project #2 - "Date"
+Seth Roberts
 
 This is a class named `Date` which enforces an invariant that the object always represents a valid date. There are also unit tests that we wrote to test our code as we developed it. This project was intended to strengthen our skills and knowledge of: `static`, `const`, constructors, destructors, and a few other concepts.
 

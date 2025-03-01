@@ -30,8 +30,8 @@ Date::Date(int d, int m, int y) {
 	};
 };
 
-Date::Order order = Date::Order::MonthDayYear;
-char Date::seperator = '/';
+Date::Order Date::order = Date::Order::MonthDayYear;
+char Date::separator = '/';
 
 const int Date::day() {
 	return _date.tm_mday;
@@ -128,15 +128,15 @@ void Date::advance(int numOfDays) {
 	_date = *localtime(&seconds);
 };
 
-void Date::print(std::ostream& outputStream) {
+const void Date::print(std::ostream& outputStream) {
 	if (Date::order == Date::Order::DayMonthYear) {
-		outputStream << this->day() << Date::seperator << this->month() << Date::seperator << this->year() << std::endl;
+		outputStream << day() << Date::separator << month() << Date::separator << year();
 	}
 	else if (Date::order == Date::Order::MonthDayYear) {
-		outputStream << this->month() << Date::seperator << this->day() << Date::seperator << this->year() << std::endl;
+		outputStream << month() << Date::separator << day() << Date::separator << year();
 	}
 	else if (Date::order == Date::Order::YearMonthDay) {
-		outputStream << this->year() << Date::seperator << this->month() << Date::seperator << this->day() << std::endl;
+		outputStream << year() << Date::separator << month() << Date::separator << day();
 	}
 };
 

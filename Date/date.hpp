@@ -19,7 +19,7 @@ public:
         YearMonthDay
     };
     static Order order;
-    static char seperator;
+    static char separator;
 
     const int day();
     const int month();
@@ -31,7 +31,7 @@ public:
     const std::string dayName();
     void advance();
     void advance(int numOfDays);
-    void print(std::ostream&);
+    const void print(std::ostream&);
     static Date now();
 
 private:

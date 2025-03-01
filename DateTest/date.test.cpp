@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "date.hpp"
+#include <sstream>
 TEST(DefaultCtor, assignsCorrectDefaultValues) {
 	Date test(1, 2, 2020);
 	EXPECT_EQ(test.day(), 1);
@@ -51,13 +52,14 @@ TEST(Setters, catchInvalidMonthSetter)
     }
 }
 TEST(Props, correctMonthName) {
-    Date test(3, 4, 2025);
-    EXPECT_EQ(test.monthName(), "April");
+    Date test(3, 2, 2025);
+    EXPECT_EQ(test.monthName(), "February");
 }
 TEST(Props, correctDayName) {
-    Date test(28, 2, 2025);
-    EXPECT_EQ(test.dayName(), "Friday");
+    Date test(1, 3, 2025);
+    EXPECT_EQ(test.dayName(), "Saturday");
 }
+
 TEST(Advance, correctDefaultAdvance) {
     Date test(28, 2, 2025);
     test.advance();
@@ -83,3 +85,36 @@ TEST(Now, checkCurrentTime) {
     EXPECT_EQ(test.month(), date.tm_mon + 1);
     EXPECT_EQ(test.year(), date.tm_year + 1900);
 }
+
+TEST(Print, PrintFormatsCorrectly) {
+    Date date(5, 7, 2024);
+    Date::order = Date::Order::MonthDayYear;
+
+    std::ostringstream output;
+    date.print(output);
+
+    EXPECT_EQ(output.str(), "7/5/2024");
+}
+
+TEST(Print, PrintFormatsCorrectly2) {
+    Date date(5, 7, 2024);
+    Date::order = Date::Order::DayMonthYear;
+
+    std::ostringstream output;
+    output.str("");
+    date.print(output);
+
+    EXPECT_EQ(output.str(), "5/7/2024");
+}
+
+TEST(Print, PrintFormatsCorrectly3) {
+    Date date(5, 7, 2024);
+    Date::order = Date::Order::YearMonthDay;
+
+    std::ostringstream output;
+    output.str("");
+    date.print(output);
+
+    EXPECT_EQ(output.str(), "2024/7/5");
+}
+
